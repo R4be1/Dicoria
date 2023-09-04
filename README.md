@@ -40,9 +40,9 @@ To use Dicoria, follow the steps below:
 
 ## Acknowledgements
 
-Dicoria was developed by Rebel.
+[![Dicoria was developed by Rebel.](https://github.com/R4be1/)]
 
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=R4be1&show_icons=true&theme=radical)](https://github.com/anuraghazra/github-readme-stats)
+[![Rebel's GitHub stats](https://github-readme-stats.vercel.app/api?username=R4be1&show_icons=true&theme=radical)]
 
 ## Disclaimer
 
