@@ -1,3 +1,4 @@
+import sys
 import time
 import mmh3
 import json
@@ -83,8 +84,10 @@ class IdentCMS:
 
         finger_url.append(webroot+"/")
         finger_url.append(webroot+"/favicon.ico")
+
         for finger in self.CMSFinger1:
             finger_url.append( webroot+finger["url"] if finger["url"].startswith("/") else webroot+"/"+finger["url"] )
+
         finger_url=list( set(finger_url) )
         return finger_url
 
@@ -96,36 +99,25 @@ class IdentCMS:
         for finger in self.CMSFinger1:
             if finger["url"] in response["url"] and finger["url"]!="/":
                 if finger["md5"] and finger["md5"] == MD5(response["content"]):
-                    print(response["url"])
-                    print( MD5(response["content"]) )
-                    print(finger["name"])
                     self.Fingers.append( finger["name"] )
 
                 elif finger["re"] and response["text"].find(finger["re"])!=-1:
-                    print(response["url"])
-                    print(finger["name"])
                     self.Fingers.append( finger["name"] )
 
         for finger in self.CMSFinger2["fingerprint"]:
 
             if finger["method"]=="keyword" and finger["location"]=="body":
                 if all([ response["text"].find(_keyword)!=-1 for _keyword in finger["keyword"] ]):
-                    print(response["url"])
-                    print(finger["cms"])
                     self.Fingers.append( finger["cms"] )
 
             elif finger["method"]=="keyword" and finger["location"]=="header":
                 for _keyword in finger["keyword"]:
                     if _keyword in str( response["headers"] ):
-                        print(response["url"])
-                        print(finger["cms"])
                         self.Fingers.append( finger["cms"] )
 
             elif finger["method"]=="icon_hash" and response["url"].endswith(".ico"):
                 for _hash in finger["keyword"]:
                     if HASH(response["content"])==_hash:
-                        print(response["url"])
-                        print(finger["cms"])
                         self.Fingers.append( finger["cms"] )
 
         self.Fingers=list( set(self.Fingers) )
@@ -137,6 +129,21 @@ def Parameter(para):
         para=sys.argv[para+1] if len(sys.argv) > para+1 else None
         return para
 
+def progress_bar(title, iterable, bar_length=50):
+    total_length = len(iterable)
+    
+    for i, item in enumerate(iterable):
+        percent = (i + 1) / total_length
+
+        arrow = '▆' * int(round(percent * bar_length) - 1)
+        spaces = ' ' * (bar_length - len(arrow))
+
+        sys.stdout.write(f'\r  [{title}] [{arrow + spaces}] {percent * 100:.2f}%')
+        sys.stdout.flush()
+
+        yield item
+
+
 def HASH(content):
     icon_hash=mmh3.hash( base64.encodebytes(content) )
     return str(icon_hash)
@@ -145,12 +152,31 @@ def MD5(content):
     return hashlib.md5(content).hexdigest()
 
 if __name__=="__main__":
-  IdentCMSer=IdentCMS()
-  responses = requests_responses( [ {"webroot" : _ } for _ in IdentCMSer.gen(Parameter("-u")) ] )
-  
-  for response in responses:
-      IdentCMSer.ident(response)
+    IdentCMSer=IdentCMS()
+    print('''\033[1;5;31m
+          _______    _________ 
+  ____    \   _  \   \_____   \\
+ /  _ \   /  /_\  \     /   __/
+(  <_> )  \  \_/   \   |   |   
+ \____/ /\ \_____  /   |___|   
+        \/       \/    <___>  By Rebel.
+    \033[0m''')
 
-  for finger in IdentCMSer.Fingers:
-      print(finger)
+    if "-u" in sys.argv and Parameter("-u"):
 
+        responses = requests_responses(
+            [ {"webroot" : _ } for _ in IdentCMSer.gen(Parameter("-u")) ]
+        )
+      
+        for response in progress_bar(f"Dicoria Identify CMS", responses):
+            IdentCMSer.ident(response)
+
+        print() 
+
+        for finger in IdentCMSer.Fingers:
+            print("    \033[1;31m"+finger+"\033[0m")
+
+        print()
+
+    else:
+        print("How to use?  python3 Dicoria.py -u 'http://www.example.com' ")
