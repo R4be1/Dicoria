@@ -71,7 +71,6 @@ def requests_responses(tasks, semaphore=2048) -> list():
     responses = asyncio.run(requests_async_function_(tasks,semaphore))
     return responses
 
-
 class IdentCMS:
     def __init__(self):
         self.Fingers=list()
@@ -132,6 +131,12 @@ class IdentCMS:
         self.Fingers=list( set(self.Fingers) )
         return self.Fingers
 
+def Parameter(para):
+    if para in sys.argv:
+        para=sys.argv.index(para)
+        para=sys.argv[para+1] if len(sys.argv) > para+1 else None
+        return para
+
 def HASH(content):
     icon_hash=mmh3.hash( base64.encodebytes(content) )
     return str(icon_hash)
@@ -141,7 +146,7 @@ def MD5(content):
 
 if __name__=="__main__":
   IdentCMSer=IdentCMS()
-  responses = requests_responses( [ {"webroot" : _ } for _ in I.gen("http://www.github.com") ] )
+  responses = requests_responses( [ {"webroot" : _ } for _ in IndentCMSer.gen(Parameter("-u")) ] )
   
   for response in responses:
       IdentCMSer.ident(response)
