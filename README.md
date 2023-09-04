@@ -12,7 +12,7 @@ Dicoria 是一款根据网站响应识别内容管理系统 (CMS) 的工具。�
 
 1. Clone this repository:
    ```
-   git clone https://github.com/R4be1/Dicoria/
+   git clone https://github.com/R4be1/Dicoria.git
    ```
 
 2. Install the required dependencies:
