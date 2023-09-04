@@ -41,6 +41,7 @@ To use Dicoria, follow the steps below:
 ## Acknowledgements
 
 Dicoria was developed by Rebel.
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=R4be1)](https://github.com/anuraghazra/github-readme-stats)
 
 ## Disclaimer
 
