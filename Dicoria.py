@@ -146,7 +146,7 @@ def MD5(content):
 
 if __name__=="__main__":
   IdentCMSer=IdentCMS()
-  responses = requests_responses( [ {"webroot" : _ } for _ in IndentCMSer.gen(Parameter("-u")) ] )
+  responses = requests_responses( [ {"webroot" : _ } for _ in IdentCMSer.gen(Parameter("-u")) ] )
   
   for response in responses:
       IdentCMSer.ident(response)
