@@ -1,6 +1,7 @@
 # Dicoria (重瞳)
 
 Dicoria is a tool used to identify Content Management Systems (CMS) based on the website's response. It utilizes various techniques and fingerprinting methods to determine the CMS being used.
+![Uploading 图片.png…]()
 
 ## Installation
 
