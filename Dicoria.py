@@ -132,8 +132,8 @@ def Parameter(para):
 def progress_bar(title, iterable, bar_length=50):
     total_length = len(iterable)
     
-    for i, item in enumerate(iterable):
-        percent = (i + 1) / total_length
+    for index, item in enumerate(iterable):
+        percent = (index + 1) / total_length
 
         arrow = '▆' * int(round(percent * bar_length) - 1)
         spaces = ' ' * (bar_length - len(arrow))
