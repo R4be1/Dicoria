@@ -11,7 +11,9 @@ from urllib.parse import urljoin
 from urllib.parse import urlparse
 
 async def requests_async_function_(tasks, URL=True, STATUS_CODE=True, TEXT_LENGTH=True, HEADERS=True, TEXT=True, CONTENT=False, semaphore=2048):
+
     media_type = ["image/","video/","audio/","application/zip","application/x-rar-compressed","application/x-tar","application/gzip","application/x-7z-compressed","application/pdf","application/msword","application/vnd.ms-excel","application/vnd.ms-powerpoint","application/font"]
+
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=700),connector=aiohttp.TCPConnector(ssl=False)) as session:
         _semaphore = asyncio.Semaphore(semaphore) if semaphore else asyncio.Semaphore()
 
@@ -75,8 +77,12 @@ def requests_responses(tasks, semaphore=2048) -> list():
 class IdentCMS:
     def __init__(self):
         self.Fingers=list()
-        self.CMSFinger1=json.load(open("CMSFinger1.json"))
-        self.CMSFinger2=json.load(open("CMSFinger2.json"))
+
+        with open('CMSFinger1.json', encoding='utf-8') as f:
+            self.CMSFinger1 = json.load(f)
+
+        with open('CMSFinger2.json', encoding='utf-8') as f:
+            self.CMSFinger2 = json.load(f)
 
     def gen(self,webroot):
         finger_url=list()
@@ -132,8 +138,8 @@ def Parameter(para):
 def progress_bar(title, iterable, bar_length=50):
     total_length = len(iterable)
     
-    for index, item in enumerate(iterable):
-        percent = (index + 1) / total_length
+    for i, item in enumerate(iterable):
+        percent = (i + 1) / total_length
 
         arrow = '▆' * int(round(percent * bar_length) - 1)
         spaces = ' ' * (bar_length - len(arrow))
@@ -180,3 +186,5 @@ if __name__=="__main__":
 
     else:
         print("How to use?  python3 Dicoria.py -u 'http://www.example.com' ")
+
+
