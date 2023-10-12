@@ -26,6 +26,7 @@ async def requests_async_function_(tasks, URL=True, STATUS_CODE=True, TEXT_LENGT
                             url = urljoin( task.get( "webroot" ),task.get("path") ),
                             method = "GET" if not task.get( "data" ) else "POST",
                             timeout = aiohttp.ClientTimeout( total=174 ),
+                            headers = {"User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0"},
                             params = task.get( "params" ),
                             data = task.get( "data" )
                             ) as response:
