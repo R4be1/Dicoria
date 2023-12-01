@@ -92,8 +92,9 @@ class IdentCMS:
         finger_url.append(webroot+"/")
         finger_url.append(webroot+"/favicon.ico")
 
-        for finger in self.CMSFinger1:
-            finger_url.append( webroot+finger["url"] if finger["url"].startswith("/") else webroot+"/"+finger["url"] )
+        if '--all' in sys.argv:
+            for finger in self.CMSFinger1:
+                finger_url.append( webroot+finger["url"] if finger["url"].startswith("/") else webroot+"/"+finger["url"] )
 
         finger_url=list( set(finger_url) )
         return finger_url
@@ -183,9 +184,24 @@ if __name__=="__main__":
         for finger in IdentCMSer.Fingers:
             print("    \033[1;31m"+finger+"\033[0m")
 
-        print()
+    elif "-f" in sys.argv and Parameter("-f"):
+        with open(Parameter("-f")) as file:
+            responses = requests_responses(
+                [ {"webroot" : _ }  for url in file for _ in IdentCMSer.gen(url.strip())]
+            )
+      
+        for response in progress_bar(f"Dicoria Identify CMS", responses):
+            IdentCMSer.ident(response)
+            if IdentCMSer.Fingers:
+                print(f"\n  \033[1;33m{response.get('url')}\033[0m")
+
+            for finger in IdentCMSer.Fingers:
+                print("    \033[1;31m"+finger+"\033[0m")
+            IdentCMSer.Fingers.clear()
 
     else:
-        print("How to use?  python3 Dicoria.py -u 'http://www.example.com' ")
+        print("How to use?  python3 Dicoria.py [-u 'http://www.example.com'] [-f targets.txt] [--all]")
+
+    print() 
 
 
